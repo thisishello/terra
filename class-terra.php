@@ -272,7 +272,14 @@ class Terra {
 					self::debug( sprintf( 'Using single template: "%s" for "%s (%d)"', $template, get_the_title(), get_the_ID() ) );
 
 					if ( $post_type !== null ) {
-						get_template_part( $template, '', [ 'count' => $count ] );
+						// After 1st item wrap the rest of the posts.
+						if ( $posts->post_count > 1 && ($count+1) === 1 ) {
+							get_template_part( $template, '', ['count' => $count, 'largeImage' => true] );
+						} else if ( $posts->post_count > 5 && ($count+1) === 6 ) {
+							get_template_part( $template, '', ['count' => $count, 'largeImage' => true] );
+						} else {
+							get_template_part( $template, '', ['count' => $count, 'largeImage' => false] );
+						}
 					}
 
 					// Allow 3rd party to inject HTML inside terra's loop.
